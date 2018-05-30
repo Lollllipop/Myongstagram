@@ -20,6 +20,7 @@ class SignUpProcess4 extends Component {
         <View style = { [styles.buttonStyle, { marginTop: 33 }] }>
           <Button
             title = '확인'
+            onPress={() => this.props.navigation.navigate('AfterSignIn')}
           />
         </View>
       </KeyboardAvoidingView>

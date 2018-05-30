@@ -1,35 +1,13 @@
 import React, { Component } from 'react';
-import { createStackNavigator } from 'react-navigation';
-import { SignIn, Start, SignUpProcess1, SignUpProcess2, SignUpProcess3, SignUpProcess4 } from './src/navigators/BeforeSignIn';
-
-const RootStack = createStackNavigator (
-  {
-    Start: Start,
-    SignIn: SignIn,
-    SignUpProcess1: SignUpProcess1,
-    SignUpProcess2: SignUpProcess2,
-    SignUpProcess3: SignUpProcess3,
-    SignUpProcess4: SignUpProcess4
-  },
-  {
-    initialRouteName: 'Start',
-    navigationOptions: {
-      headerStyle: {
-        backgroundColor: '#FBFBFB',
-        elevation: 0
-      },
-    }
-  }
-)
+import BeforeSignIn from './src/navigators/BeforeSignIn';
 
 class App extends Component {
   render() {
     return (
-      <RootStack/>
+      <BeforeSignIn/>
     );
   }
 }
-
 
 /**
  * navigate('뷰이름') : 원하는 뷰로 바로 이동

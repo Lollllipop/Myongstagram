@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, KeyboardAvoidingView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import styles from './styles';
 
 class SignUpProcess3 extends Component {
@@ -17,14 +18,22 @@ class SignUpProcess3 extends Component {
         keyboardVerticalOffset={0}
       >
         <Text style = { { fontSize: 17 } }> 프로필 사진 등록 </Text>
-        <View style = { [styles.inputStyle, { marginTop: 23 }] }>
-          <TextInput
-            underlineColorAndroid='transparent'
-            autoFocus={true}
-            placeholder="닉네임"  
+        <View style = { { 
+          borderWidth: 2, 
+          borderColor: 'black', 
+          alignItems: 'center', 
+          borderRadius: 50, 
+          width: 90, 
+          height: 90, 
+          marginTop: 23, 
+          marginBottom: 13 
+        } }>
+          <Ionicons 
+            name="ios-person-outline" 
+            size={87} 
+            color="black"
           />
         </View>
-
         <View style = { styles.buttonStyle }>
           <Button
             title = '회원 가입'
