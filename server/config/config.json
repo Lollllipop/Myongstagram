@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "dahan",
+    "password": "950113",
+    "database": "myongstagram_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "dahan",
+    "password": "950113",
+    "database": "myongstagram_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "dahan",
+    "password": "950113",
+    "database": "myongstagram_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
