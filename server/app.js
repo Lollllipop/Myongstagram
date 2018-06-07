@@ -4,26 +4,42 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var OAuthServer = require('express-oauth-server');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+var indexRouter = require('./routes/index');
+var userRouter = require('./routes/user');
+var tokenRouter = require('./routes/token');
+// var apiRouter = require('./routes/api');
+
+var oauthModel = require('./utils/oauth');
 
 var app = express();
+
+
+app.oauth = new OAuthServer({
+  model: oauthModel
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 
-app.use('/', index);
-app.use('/users', users);
+
+// 토큰 관련해서 언제 재발송 되는건지 그런거 생각해보기
+app.use('/', indexRouter);
+app.use('/user', userRouter);
+app.use('/token', tokenRouter(app));
+// app.use('/api', app.oauth.authenticate(), apiRouter); // 서버의 api 데이터에 접근시에는 인증 필요!
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
