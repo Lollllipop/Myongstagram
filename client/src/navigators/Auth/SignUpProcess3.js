@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import qs from 'qs';
 import { 
   KeyboardAvoidingView,
   StyleSheet, 
@@ -8,7 +12,10 @@ import {
   View, 
   } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { signUp } from '../../actions';
+import { Config } from '../../config';
 import styles from './styles';
+
 
 class SignUpProcess3Screen extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -18,6 +25,10 @@ class SignUpProcess3Screen extends Component {
   };
 
   render() {
+    const username = this.props.navigation.getParam('username', 'NO-USERNAME');
+    const password = this.props.navigation.getParam('password', 'NO-PASSWORD');
+    const email = this.props.navigation.getParam('email', 'NO-EMAIL');    
+
     return (
       <KeyboardAvoidingView 
         style = {styles.container}
@@ -44,7 +55,10 @@ class SignUpProcess3Screen extends Component {
         <View style = {styles.buttonStyle}>
           <Button
             title = '회원 가입'
-            onPress={() => this.props.navigation.navigate('SignUpProcess4')}
+            onPress={() => {
+              this.props.signUp(username, password, email)
+              this.props.navigation.navigate('SignUpProcess4')
+            }}
           />
         </View>
       </KeyboardAvoidingView>
@@ -52,4 +66,12 @@ class SignUpProcess3Screen extends Component {
   }
 }
 
-export default SignUpProcess3Screen;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    { 
+      signUp,
+    },
+    dispatch);
+}
+
+export default connect(null, { signUp })(SignUpProcess3Screen);

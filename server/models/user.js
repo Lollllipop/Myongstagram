@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
     username: DataTypes.STRING,
-    password: DataTypes.STRING
-    // 이 부분 해쉬 하는 것은 받을 때 하는게 좋을듯
+    password: DataTypes.STRING,
+    email: DataTypes.STRING
   }, {});
 
   User.associate = function(models) {
@@ -13,11 +13,13 @@ module.exports = (sequelize, DataTypes) => {
   };
   
   User.prototype.validatePassword = function(password) {
-    return bcrypt.compare(password, this.password_digest); // 비교해서 true/false를 반환
+    return bcrypt.compare(password, this.password); // 비교해서 true/false를 반환
   };
 
   User.prototype.toJSON = function() {
     var values = Object.assign({}, this.get());
+    
+    delete values.password;
     return values;
   };
   

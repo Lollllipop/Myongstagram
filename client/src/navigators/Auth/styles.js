@@ -14,12 +14,21 @@ export default styles = StyleSheet.create({
     width: 260,
     marginTop: 12
   },
-  inputStyle: {
+  inputWrapperStyle: {
+    alignItems: 'center',
+    flexDirection: 'row',
     height: 35,
     borderColor: '#AFAFAF',
     borderWidth: 1,
     borderRadius: 3,
     width: 260,
     marginTop: 12
+  },
+  inputStyle: {
+    flex: 1
+  },
+  inputCheckStyle: {
+    marginRight: 5,
+    marginLeft: 5
   }
 });

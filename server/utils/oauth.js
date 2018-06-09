@@ -21,6 +21,7 @@ m.getClient = async function(clientId, clientSecret) {
 /**
  * password grant type에만 사용되는 함수로 
  * password grant type의 특성상 user의 id,pw를 관리하게 되므로 있는 함수임
+ * 이 함수 먼저 실행 후 DB에서 유저 체킹후 saveToken 함수를 통해 토큰을 발행한다. 해당 유저에게
  */
 m.getUser = async function(username, password) {
   const user = await db.User.findOne({where: {username: username}});

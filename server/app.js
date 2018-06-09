@@ -34,12 +34,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 
-
-// 토큰 관련해서 언제 재발송 되는건지 그런거 생각해보기
+// route
 app.use('/', indexRouter);
-app.use('/user', userRouter);
-app.use('/token', tokenRouter(app));
-// app.use('/api', app.oauth.authenticate(), apiRouter); // 서버의 api 데이터에 접근시에는 인증 필요!
+app.use('/user', userRouter); // 회원가입
+app.use('/token', tokenRouter(app)); // 로그인 (토큰 발행)
+// app.use('/api', app.oauth.authenticate(), apiRouter); // 로그인 후 서버의 api 데이터에 접근시에는 인증 필요!
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
