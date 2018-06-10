@@ -6,7 +6,6 @@ const db = require('../models');
 
 router.post('/', asyncError(async (req, res, next) => {
   const body = req.body.body;
-
   const salt = await bcrypt.genSalt(10);
   const password_digest = await bcrypt.hash(body.password, salt);
 
@@ -26,8 +25,11 @@ router.post('/', asyncError(async (req, res, next) => {
 
 router.get('/', asyncError(async (req, res, next) => {
   const user = await db.User.findOne({where: {username: req.query.username}});
-  const response = user ? true : false
-  res.send(response);
+  if (user) {
+    res.status(422).send('username exists');
+  } else {
+    res.send(true);
+  }
 }));
 
 module.exports = router;

@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'qs';
 import { AsyncStorage } from 'react-native';
 import { Config } from '../config';
-// import NavigationService from '../navigation_service';
+import NavigationService from '../../NavigationService';
 
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_IN = 'SIGN_IN';
@@ -14,13 +14,10 @@ export function signIn(username, password) {
       // 주의!: OAuth2Server는 x-www-form-urlencoded 만 받는다.
       const response = await getToken(username, password);
 
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`; // 헤더에 토큰 고정!
-      console.log(`Bearer ${response.data.access_token}`);
-      await AsyncStorage.setItem('accessToken', response.data.access_token);
+      await setToken(response.data.access_token, response.data.refresh_token)
       NavigationService.navigate('App');
     } catch (err) {
-      console.log(err.response || err);
-      alert('Invalid ID or Password');
+      alert('아이디 또는 비밀번호를 확인하세요.');
     }
   };
 }
@@ -45,13 +42,15 @@ export function signUp(username, password, email) {
       }
     });
     
-    const response2 = await getToken(username, password);
+    const tokenResponse = await getToken(username, password);
+    console.log(tokenResponse.data);
 
+    await setToken(tokenResponse.data.access_token, tokenResponse.data.refresh_token)
+    NavigationService.navigate('SignUpProcess4');
   }
 }
 
 async function getToken(username, password) {
-  console.log('hello signIn');
   const response = await axios.post(`${Config.server}/token`,
     qs.stringify({
       username: username,
@@ -64,4 +63,9 @@ async function getToken(username, password) {
   });
 
   return response;
+}
+
+async function setToken(accessToken, refreshToken) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; // 헤더에 토큰 고정!
+  await AsyncStorage.setItem([['accessToken', accessToken], ['refreshToken', refreshToken]]);
 }

@@ -5,11 +5,9 @@ import axios from 'axios';
 import { Config } from '../../config';
 import { 
   KeyboardAvoidingView,
-  TouchableHighlight,
   StyleSheet, 
   TextInput,
   Button,
-  Modal,
   Text, 
   View, 
   } from 'react-native';
@@ -45,46 +43,6 @@ class SignUpProcess2Screen extends Component {
         behavior = 'padding'
         keyboardVerticalOffset = {0}
       >
-        <View>
-          <Modal
-            style = {{
-              flex: 0,
-            }}
-            animationType="fade"
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {
-              alert('Modal has been closed.');
-            }}>
-            <View style = {{
-              flex: 1,
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-              <View style = {{
-                width: 250,
-                height: 100,
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white',
-                opacity: 3,
-                elevation: 5
-              }}
-              >
-                <Text style = {{fontSize: 16}}> 이미 사용중인 닉네임 입니다. </Text>
-                <TouchableHighlight
-                  style = {{marginTop: 16, paddingTop: 5}}
-                  onPress={() => {
-                    this.setModalVisible(!this.state.modalVisible);
-                  }}>
-                  <Text style = {{fontSize: 16}}> 닫기 </Text>
-                </TouchableHighlight>
-              </View>
-            </View>
-          </Modal>
-        </View>
         <Text style = {{fontSize: 17}}> 닉네임 및 비밀번호 </Text>
         <View style = {[styles.inputWrapperStyle, {marginTop: 23}]}>
           <TextInput
@@ -137,20 +95,20 @@ class SignUpProcess2Screen extends Component {
             title = '다음'
             disabled = {!this.state.isUsername || !this.state.isPassword}
             onPress = {async () => {
-              const isTakenUsername = await axios.get(`${Config.server}/user`,{
-                params: {
-                  username: this.state.username
-                }
-              });
+              try {
+                const isTakenUsername = await axios.get(`${Config.server}/user`,{
+                  params: {
+                    username: this.state.username
+                  }
+                });
 
-              if (isTakenUsername.data) {
-                this.setModalVisible(true)
-              } else {
                 this.props.navigation.navigate('SignUpProcess3', {
                   email: email,
                   username: this.state.username,
                   password: this.state.password
                 })
+              } catch (err) {
+                alert('이미 사용중인 닉네임 입니다.');
               }
             }}
           />

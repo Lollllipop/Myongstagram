@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import qs from 'qs';
 import { 
   KeyboardAvoidingView,
   StyleSheet, 
@@ -13,7 +11,6 @@ import {
   } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { signUp } from '../../actions';
-import { Config } from '../../config';
 import styles from './styles';
 
 
@@ -55,9 +52,8 @@ class SignUpProcess3Screen extends Component {
         <View style = {styles.buttonStyle}>
           <Button
             title = '회원 가입'
-            onPress={() => {
+            onPress = {() => {
               this.props.signUp(username, password, email)
-              this.props.navigation.navigate('SignUpProcess4')
             }}
           />
         </View>
