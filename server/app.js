@@ -10,7 +10,7 @@ var OAuthServer = require('express-oauth-server');
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 var tokenRouter = require('./routes/token');
-// var apiRouter = require('./routes/api');
+var apiRouter = require('./routes/api');
 
 var oauthModel = require('./utils/oauth');
 
@@ -38,7 +38,7 @@ app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 app.use('/', indexRouter);
 app.use('/user', userRouter); // 회원가입
 app.use('/token', tokenRouter(app)); // 로그인 (토큰 발행)
-// app.use('/api', app.oauth.authenticate(), apiRouter); // 로그인 후 서버의 api 데이터에 접근시에는 인증 필요!
+app.use('/api', app.oauth.authenticate(), apiRouter); // 로그인 후 서버의 api 데이터에 접근시에는 인증 필요!
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

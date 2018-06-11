@@ -6,6 +6,7 @@ import {
   View, 
   } from 'react-native';
 import styles from './styles';
+import ProfileOverview from '../../components/View/ProfileOverview';
 
 class OtherProfileScreen extends Component {
   static navigationOptions = {
@@ -17,7 +18,7 @@ class OtherProfileScreen extends Component {
 
   render() {
     return (
-        <Text> OtherProfile </Text>
+        <ProfileOverview/>
     );
   }
 }

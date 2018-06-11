@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const axios = require('axios');
 const router = express.Router();
 const asyncError = require('../utils/async-error');
 const db = require('../models');
@@ -30,6 +31,24 @@ router.get('/', asyncError(async (req, res, next) => {
   } else {
     res.send(true);
   }
+}));
+
+router.post('/tester', asyncError(async (req, res, next) => {
+  const testUsers = await axios.get('https://randomuser.me/api/?results=50&inc=login,email');
+  testUsers.data.results.forEach((val, idx) => {
+    db.User.create({
+      username: val.login.username,
+      password: val.login.sha1, // password를 해싱한 것
+      email: val.email
+    }).catch( error => {
+      if (error.name == 'SequelizeUniqueConstraintError') {
+        return res.status(422).json({code: 101, message: 'username exists'});
+      }
+      next(error);
+    });
+  });
+
+  res.send('Successfully created user');
 }));
 
 module.exports = router;

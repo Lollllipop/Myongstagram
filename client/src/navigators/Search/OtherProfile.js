@@ -6,18 +6,24 @@ import {
   View, 
   } from 'react-native';
 import styles from './styles';
+import ProfileOverview from '../../components/View/ProfileOverview';
 
 class OtherProfileScreen extends Component {
-  static navigationOptions = {
-    title: '닉네임 받아온 것 입력',
-    headerStyle: {
-      backgroundColor: '#FBFBFB'
+  static navigationOptions = ({navigation}) => {
+    const title = navigation.getParam('username', 'NO-USERNAME');
+    return {
+      title: title,
+      headerStyle: {
+        backgroundColor: '#FBFBFB'
+      }
     }
   };
 
   render() {
     return (
-        <Text> OtherProfile </Text>
+      <View>
+        <ProfileOverview/>
+      </View>
     );
   }
 }

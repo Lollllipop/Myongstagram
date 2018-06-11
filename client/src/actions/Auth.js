@@ -6,6 +6,7 @@ import NavigationService from '../../NavigationService';
 
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_IN = 'SIGN_IN';
+export const SIGN_OUT = 'SIGN_OUT';
 
 
 export function signIn(username, password) {
@@ -33,21 +34,20 @@ export function signUp(username, password, email) {
         }
       }
     )
-
-    dispatch({
-      type: SIGN_UP, 
-      data: {
-        username: username,
-        email: email,
-      }
-    });
     
     const tokenResponse = await getToken(username, password);
-    console.log(tokenResponse.data);
 
     await setToken(tokenResponse.data.access_token, tokenResponse.data.refresh_token)
     NavigationService.navigate('SignUpProcess4');
   }
+}
+
+export function signOut() {
+  return async dispatch => {
+    delete axios.defaults.headers.common['Authorization'];
+    await AsyncStorage.clear();
+    NavigationService.navigate('Auth');
+  };
 }
 
 async function getToken(username, password) {
@@ -66,6 +66,6 @@ async function getToken(username, password) {
 }
 
 async function setToken(accessToken, refreshToken) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; // 헤더에 토큰 고정!
-  await AsyncStorage.setItem([['accessToken', accessToken], ['refreshToken', refreshToken]]);
+  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; // 헤더에 토큰 고정
+  await AsyncStorage.multiSet([['accessToken', accessToken], ['refreshToken', refreshToken]]); // multiSet 주의
 }

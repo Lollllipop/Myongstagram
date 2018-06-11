@@ -7,7 +7,7 @@ m.getClient = async function(clientId, clientSecret) {
     params.clientSecret = clientSecret;
   }
   const result = await db.OAuthClient.findOne({ where: params });
-  
+
   if (!result) {
     return null;
   }

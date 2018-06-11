@@ -39,5 +39,4 @@ export default styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'flex-end',
   }
-  
 });

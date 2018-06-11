@@ -1,5 +1,5 @@
 import { 
-  SIGN_UP
+  GET_CURRENT_USER
 } from '../actions'; 
 
 const initValue = {
@@ -10,7 +10,7 @@ const initValue = {
 
 export default function(state=initValue, action) {
   switch(action.type) {
-  case SIGN_UP:  
+  case GET_CURRENT_USER:  
     return {                                                           
       error: '',
       username: action.data.username,
