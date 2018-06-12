@@ -4,19 +4,29 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { 
   KeyboardAvoidingView,
+  ActivityIndicator,
   StyleSheet, 
   FlatList,
   Button,
   Text, 
   View, 
   } from 'react-native';
-import UserListItem from '../View/UserListItem';
-import { getUsers, clearReducer } from '../../actions';
+  import UserListItem from '../View/UserListItem';
+import { 
+  getUsers, 
+  clearReducer, 
+  getRecentUsers,
+  getPriorUsers, 
+} from '../../actions';
 
 
 class UserList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      refreshing: false,
+      prevId: '',
+    }
   }
   
   componentDidMount() {
@@ -31,18 +41,57 @@ class UserList extends Component {
     if (this.props.users) {
       return (
         <FlatList
-          data = {this.props.users} // 1. 데이터를 주고
-          renderItem = {this._renderItem} // 2. 위의 데이터로 렌더링
-          keyExtractor = {item => item.username}
+          data = {this.props.users} 
+          renderItem = {this._renderItem} 
+          keyExtractor = {item => String(item.id)}
+          refreshing = {this.state.refreshing}
+          onRefresh = {this._onRefresh}
+          onEndReachedThreshold = {1}
+          onEndReached = {this._onEndReached}
+          ListFooterComponent = {this._renderFooter}
         />
       );
     }
   }
 
-  _renderItem = ({item}) => { // 3. 하나씩 렌더링
+  _renderItem = ({item}) => { 
     return (
       <UserListItem username = {item.username}/>
     );
+  };
+
+  _renderFooter = ({item}) => { 
+    return (
+      <ActivityIndicator size = 'large'/>
+    );
+  };
+
+  _onRefresh = async () => { 
+    const recentUserId = this.props.users[0].id;
+
+    this.setState({
+      refreshing: true
+    })
+
+    await this.props.getRecentUsers(recentUserId, this.props.isSearching, this.props.keyword);
+
+    this.setState({
+      refreshing: false
+    })
+  };
+
+  
+  _onEndReached = async () => { 
+    const lastUserId = this.props.users[this.props.users.length - 1].id;
+
+    this.setState({
+      prevId: lastUserId
+    })
+
+    if (this.state.prevId !== lastUserId) {
+      this.props.getPriorUsers(lastUserId, this.props.isSearching, this.props.keyword);
+    }
+
   };
 }
 
@@ -76,6 +125,8 @@ function mapDispatchToProps(dispatch) {
     { 
       getUsers, // 끝에 도달했을 때 또 가져오는 함수 필요 / 그냥 뒤에 계속 붙이면 될듯? unmount시 15개만 남기기
       clearReducer,
+      getPriorUsers,
+      getRecentUsers,
     },
     dispatch);
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { SearchBar } from 'react-native-elements';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { SearchBar } from 'react-native-elements'
 import { 
   StyleSheet, 
   TextInput,
@@ -11,59 +11,87 @@ import {
   View, 
   } from 'react-native';
 import styles from './styles';
-import { Ionicons } from '@expo/vector-icons';
-// import { getRandomUsers } from '../../actions';
 import UserList from '../../components/List/UserList';
+import { 
+  getUsers,
+  getSearchUsers, 
+  clearReducer, 
+} from '../../actions';
+
 
 class SearchListScreen extends Component {
-  static navigationOptions = {
-    headerTitle:
-      <SearchBar 
-        // style = {{alignSelf: 'stretch', flex: 1}}
-        placeholder = "검색" 
-        showLoadingIcon
-        lightTheme 
-        round 
-      />,
-    // headerTitleStyle: {
-    //   flex: 1,
-    //   textAlign: 'center',
-    //   alignSelf:'stretch',
-    // },
-    // headerStyle: {
-    //   flex: 1,
-    //   alignSelf:'stretch',
-    //   backgroundColor: '#FBFBFB'
-    // },
-  };
+  static navigationOptions = ({navigation}) => {
+    return {
+      headerLeft:
+        <View style = {styles.searchInputStyle}> 
+          <SearchBar 
+            onChangeText = {(data) => {
+              if (data) {
+                navigation.getParam('searchHandler')(true, data); // access global state inside navigation header
+                navigation.getParam('getSearchUsers')(data);
+              } else {
+                navigation.getParam('searchHandler')(false, data); 
+                navigation.getParam('getUsers')();
+              }
+            }}
+            style = {{flex: 1}}
+            placeholder = "검색" 
+            lightTheme 
+            round 
+          />
+        </View>,
+    }
+  }
 
-  // componentDidMount() {
-  //   this.props.getCurrentUser();
-  // }
+  componentDidMount() {
+    this.props.navigation.setParams({
+      searchHandler: this._searchHandler.bind(this), // this bind!
+      getSearchUsers: this._getSearchUsers.bind(this),
+      getUsers: this._getUsers.bind(this),
+    });
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isSearching: false,
+      searchKeyword: ''
+    }
+  }
 
   render() {
     return (
       <View>
-        <UserList/>
+        <UserList isSearching = {this.state.isSearching} keyword = {this.state.searchKeyword}/>
       </View>
     );
+  }
+
+  _searchHandler(isSearching, searchKeyword) {
+    this.setState({
+      isSearching: isSearching,
+      searchKeyword: searchKeyword
+    })
+  }
+
+  _getSearchUsers(data) {
+    this.props.getSearchUsers(data);
+  }
+
+  _getUsers() {
+    this.props.getUsers();
   }
 }
 
 
-// function mapStateToProps(state) {
-//   return {
-//     users: state.SearchListReducer.users,
-//   };
-// }
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    { 
+      getUsers,
+      getSearchUsers,
+      clearReducer,
+    },
+    dispatch);
+}
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators(
-//     { 
-//       getRandomUsers, // 15개? 가져오는 함수 필요
-//     },
-//     dispatch);
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(SearchListScreen);
-export default SearchListScreen;
+export default connect(null, mapDispatchToProps)(SearchListScreen);

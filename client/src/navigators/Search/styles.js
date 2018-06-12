@@ -43,11 +43,8 @@ export default styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   searchInputStyle: {
-    flexDirection: 'row',
-    height: 35,
-    justifyContent: 'space-between',
+    flex: 1,
     width: width,
-    alignItems: 'flex-end',
   }
   
 });

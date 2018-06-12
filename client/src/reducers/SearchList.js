@@ -1,6 +1,9 @@
 import { 
   GET_USERS,
-  CLEAR_REDUCER
+  GET_RECENT_USERS,
+  GET_PRIOR_USERS,
+  GET_SEARCH_USERS,
+  CLEAR_REDUCER,
 } from '../actions'; 
 
 const initValue = {
@@ -11,15 +14,48 @@ const initValue = {
 export default function(state = initValue, action) {
   switch(action.type) {
   case GET_USERS:  
-    const users = action.data.users.map((val, idx) => {
+    var users = action.data.users.map((val, idx) => {
       return {
-        // key: val, // username이 차피 유니크한 값이기 때문에 key로 작용 가능 key는 string 형태로 넘겨줘야 함
-        username: val
+        id: val.id,
+        username: val.username
       }
     })
     return {                                                      
       error: '',
-      users: [...state.users, ...users] // 뒤에 이어서 붙임 계속
+      users: [...users] // 뒤에 이어서 붙임 계속
+    };
+  case GET_RECENT_USERS:  
+    var users = action.data.users.map((val, idx) => {
+      return {
+        id: val.id,
+        username: val.username
+      }
+    })
+    return {                                                      
+      error: '',
+      users: [...users, ...state.users] // 최근꺼이므로 앞에 이어서 붙임 계속
+    };
+  case GET_PRIOR_USERS:  
+    var users = action.data.users.map((val, idx) => {
+      return {
+        id: val.id,
+        username: val.username
+      }
+    })
+    return {                                                      
+      error: '',
+      users: [...state.users, ...users] // 최근꺼이므로 앞에 이어서 붙임 계속
+    };
+  case GET_SEARCH_USERS:  
+    var users = action.data.users.map((val, idx) => {
+      return {
+        id: val.id,
+        username: val.username
+      }
+    })
+    return {                                                      
+      error: '',
+      users: [...users] // 키워드 없으면 다시 가장 최근거 10개 가져오도록 만들 것
     };
   case CLEAR_REDUCER: 
     return {                                                      

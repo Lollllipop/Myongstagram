@@ -34,7 +34,7 @@ router.get('/', asyncError(async (req, res, next) => {
 }));
 
 router.post('/tester', asyncError(async (req, res, next) => {
-  const testUsers = await axios.get('https://randomuser.me/api/?results=50&inc=login,email');
+  const testUsers = await axios.get('https://randomuser.me/api/?results=10&inc=login,email');
   testUsers.data.results.forEach((val, idx) => {
     db.User.create({
       username: val.login.username,
