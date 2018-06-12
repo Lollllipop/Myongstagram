@@ -7,6 +7,10 @@ export const GET_USERS = 'GET_USERS';
 export const GET_RECENT_USERS = 'GET_RECENT_USERS';
 export const GET_PRIOR_USERS = 'GET_PRIOR_USERS';
 export const GET_SEARCH_USERS = 'GET_SEARCH_USERS';
+export const GET_POSTS = 'GET_POSTS';
+export const GET_RECENT_POSTS = 'GET_RECENT_POSTS';
+export const GET_PRIOR_POSTS = 'GET_PRIOR_POSTS';
+export const GET_SEARCH_POSTS = 'GET_SEARCH_POSTS';
 
 
 export function getUsers() {
@@ -56,6 +60,46 @@ export function getSearchUsers(keyword) {
       type: GET_SEARCH_USERS, 
       data: {
         users: response.data
+      }
+    });
+  };
+}
+
+
+export function getPosts() {
+  return async dispatch => {
+    const response = await axios.get(`${Config.server}/api/Posts`);
+    
+    dispatch({
+      type: GET_POSTS, 
+      data: {
+        posts: response.data
+      }
+    });
+  };
+}
+
+export function getRecentPosts(recentPostId) {
+  return async dispatch => {
+    const response = await axios.get(`${Config.server}/api/posts?recentPostId=${recentPostId}`);
+
+    dispatch({
+      type: GET_RECENT_POSTS, 
+      data: {
+        posts: response.data
+      }
+    });
+  };
+}
+
+export function getPriorPosts(lastPostId) {
+  return async dispatch => {
+    const response = await axios.get(`${Config.server}/api/posts?lastPostId=${lastPostId}`);
+   
+    dispatch({
+      type: GET_PRIOR_POSTS, 
+      data: {
+        posts: response.data
       }
     });
   };

@@ -3,7 +3,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { 
-  KeyboardAvoidingView,
   ActivityIndicator,
   StyleSheet, 
   FlatList,
@@ -11,16 +10,16 @@ import {
   Text, 
   View, 
   } from 'react-native';
-  import UserListItem from '../View/UserListItem';
+  import PostListItem from '../View/PostListItem';
 import { 
-  getUsers, 
+  getPosts, 
   clearReducer, 
-  getRecentUsers,
-  getPriorUsers, 
+  getRecentPosts,
+  getPriorPosts, 
 } from '../../actions';
 
 
-class UserList extends Component {
+class PostList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,18 +29,22 @@ class UserList extends Component {
   }
   
   componentDidMount() {
-    this.props.getUsers();
+    this.props.getPosts();
   }
+
+  // shouldComponentUpdate(nextProps, nextState){
+  //   return nextState !== this.state;
+  // }
 
   componentWillUnmount() {
     this.props.clearReducer();
   }
 
   render() {
-    if (this.props.users) {
+    if (this.props.posts) {
       return (
         <FlatList
-          data = {this.props.users} 
+          data = {this.props.posts} 
           renderItem = {this._renderItem} 
           keyExtractor = {item => String(item.id)}
           refreshing = {this.state.refreshing}
@@ -56,7 +59,7 @@ class UserList extends Component {
 
   _renderItem = ({item}) => { 
     return (
-      <UserListItem username = {item.username}/>
+      <PostListItem post = {item}/>
     );
   };
 
@@ -67,13 +70,13 @@ class UserList extends Component {
   };
 
   _onRefresh = async () => { 
-    const recentUserId = this.props.users[0].id;
+    const recentPostId = this.props.posts[0].id;
 
     this.setState({
       refreshing: true
     })
 
-    await this.props.getRecentUsers(recentUserId, this.props.isSearching, this.props.keyword);
+    await this.props.getRecentPosts(recentPostId);
 
     this.setState({
       refreshing: false
@@ -82,15 +85,15 @@ class UserList extends Component {
 
   
   _onEndReached = async () => { 
-    if (this.props.users.length >= 10) {
-      const lastUserId = this.props.users[this.props.users.length - 1].id;
+    if (this.props.posts.length >= 10) {
+      const lastPostId = this.props.posts[this.props.posts.length - 1].id;
 
       this.setState({
-        prevId: lastUserId
+        prevId: lastPostId
       })
-
-      if (this.state.prevId !== lastUserId) {
-        this.props.getPriorUsers(lastUserId, this.props.isSearching, this.props.keyword);
+  
+      if (this.state.prevId !== lastPostId) {
+        this.props.getPriorPosts(lastPostId);
       }
     }
   };
@@ -103,33 +106,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 130
   },
-  leftContainer: {
-    width: 110,
-    alignItems: 'center',
-    paddingLeft: 22
-  },
-  rightContainer: {
-    flex: 1,
-    alignItems: 'center',
-  }
 });
 
 
 function mapStateToProps(state) {
   return {
-    users: state.SearchListReducer.users,
+    posts: state.PostListReducer.posts,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     { 
-      getUsers, // 끝에 도달했을 때 또 가져오는 함수 필요 / 그냥 뒤에 계속 붙이면 될듯? unmount시 15개만 남기기
-      clearReducer,
-      getPriorUsers,
-      getRecentUsers,
+      getPosts,
+      clearReducer, 
+      getRecentPosts,
+      getPriorPosts,
     },
     dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default connect(mapStateToProps, mapDispatchToProps)(PostList);

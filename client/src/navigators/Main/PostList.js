@@ -10,6 +10,8 @@ import {
 import styles from './styles';
 import { getCurrentUser } from '../../actions';
 import { FontAwesome } from '@expo/vector-icons';
+import PostList from '../../components/List/PostList';
+
 
 class PostListScreen extends Component {
   static navigationOptions = {
@@ -37,17 +39,7 @@ class PostListScreen extends Component {
   render() {
     return (
       <View>
-        <Text> PostList </Text>
-        <Button
-         title = '유저 프로필!'
-         onPress = {() => {
-           this.props.navigation.navigate('OtherProfile');
-          }}
-        />
-        <Button
-         title = '댓글!'
-         onPress = {() => this.props.navigation.navigate('Comment')}
-        />
+        <PostList/>
       </View>
     );
   }

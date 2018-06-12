@@ -11,7 +11,7 @@ import {
   } from 'react-native';
 
 
-export default class UserList extends Component {
+export default class UserListItem extends Component {
   constructor(props) {
     super(props);
   }
