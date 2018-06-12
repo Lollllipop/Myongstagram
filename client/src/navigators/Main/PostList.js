@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { 
   StyleSheet, 
   Button,
@@ -6,6 +8,7 @@ import {
   View, 
   } from 'react-native';
 import styles from './styles';
+import { getCurrentUser } from '../../actions';
 import { FontAwesome } from '@expo/vector-icons';
 
 class PostListScreen extends Component {
@@ -27,6 +30,10 @@ class PostListScreen extends Component {
     },
   };
 
+  componentDidMount() {
+    this.props.getCurrentUser();
+  }
+
   render() {
     return (
       <View>
@@ -46,4 +53,13 @@ class PostListScreen extends Component {
   }
 }
 
-export default PostListScreen;
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    { 
+      getCurrentUser,
+    },
+    dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(PostListScreen);

@@ -32,13 +32,7 @@ class ProfileScreen extends Component {
   };
 
   componentWillMount() {
-    this.props.getCurrentUser();
-  }
-
-  componentDidUpdate() {
-    if (this.props.navigation.getParam('title','..') !== this.props.username) {
-      this.props.navigation.setParams({title: this.props.username});
-    }
+    this.props.navigation.setParams({title: this.props.username});
   }
 
   render() {

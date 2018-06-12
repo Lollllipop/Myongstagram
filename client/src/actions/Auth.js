@@ -25,15 +25,13 @@ export function signIn(username, password) {
 
 export function signUp(username, password, email) {
   return async dispatch => {
-    const response = await axios.post(`${Config.server}/user`,
-      {
-        body: {
-          'username': username,
-          'password': password,
-          'email': email
-        }
+    const response = await axios.post(`${Config.server}/user`,{
+      body: {
+        'username': username,
+        'password': password,
+        'email': email
       }
-    )
+    })
     
     const tokenResponse = await getToken(username, password);
 
