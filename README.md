@@ -29,9 +29,9 @@ server: 'http://172.30.1.23:3000'
 6. 데이터 삽입    
 Postman 실행    
 
-POST localhost:3000/testUsers     
-(user데이터 100개 생성)
+  POST localhost:3000/testUsers     
+  (user데이터 100개 생성)
    
-POST localhost:3000/testPosts    
-(post데이터 100개 생성)
+  POST localhost:3000/testPosts    
+  (post데이터 100개 생성)
    
