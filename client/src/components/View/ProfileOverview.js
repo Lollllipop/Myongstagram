@@ -26,7 +26,7 @@ export default class ProfileOverview extends Component {
           />
         </View>
         <View style = {styles.rightContainer}> 
-          <Text style = {{fontSize: 16}}> 갯수를 넣어야 함 여기다 </Text> 
+          {/* <Text style = {{fontSize: 16}}> 갯수를 넣어야 함 여기다 </Text>  */}
           <Text style = {{fontSize: 16}}> 게시물 </Text>
         </View>
       </View>

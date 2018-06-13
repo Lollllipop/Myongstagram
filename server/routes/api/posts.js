@@ -8,6 +8,7 @@ const db = require('../../models');
 router.get('/', asyncError(async (req, res, next) => {
   const lastPostId = req.query.lastPostId
   const recentPostId = req.query.recentPostId
+  const userId = req.query.userId
   let postsObjectList;
 
   if (lastPostId) {
@@ -40,6 +41,20 @@ router.get('/', asyncError(async (req, res, next) => {
         id: {
           [Op.gt]: recentPostId 
         }
+      },
+    });
+  } else if (userId) {
+    postsObjectList = await db.Post.findAll({
+      include: [{
+        model: db.User,
+        attributes: ['username']
+      }],
+      order: [
+        ['id', 'DESC'],
+      ],
+      limit: 10, // 수정 필요
+      where: {
+        UserId: Number(userId)
       },
     });
   } else {

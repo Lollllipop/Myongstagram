@@ -32,10 +32,6 @@ class PostList extends Component {
     this.props.getPosts();
   }
 
-  // shouldComponentUpdate(nextProps, nextState){
-  //   return nextState !== this.state;
-  // }
-
   componentWillUnmount() {
     this.props.clearReducer();
   }

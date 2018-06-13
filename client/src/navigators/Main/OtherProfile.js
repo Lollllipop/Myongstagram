@@ -7,6 +7,7 @@ import {
   } from 'react-native';
 import styles from './styles';
 import ProfileOverview from '../../components/View/ProfileOverview';
+import UserPostList from '../../components/List/UserPostList';
 
 class OtherProfileScreen extends Component {
   static navigationOptions = ({navigation}) => {
@@ -20,9 +21,12 @@ class OtherProfileScreen extends Component {
   };
 
   render() {
+    const userId = this.props.navigation.getParam('userId', 'NO-USERID');
+
     return (
       <View>
         <ProfileOverview/>
+        <UserPostList userId = {userId}/>
       </View>
     );
   }

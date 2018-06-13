@@ -22,7 +22,8 @@ export default class PostListItem extends Component {
         <TouchableOpacity 
           style = {styles.postHeaderContainer}
           onPress = {() => NavigationService.navigate('OtherProfile', {
-            username: this.props.post.username
+            username: this.props.post.username,
+            userId: this.props.post.userId
           })}
         > 
           <Text style = {styles.text}> {this.props.post.username} </Text>
@@ -36,7 +37,6 @@ export default class PostListItem extends Component {
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   postHeaderContainer: {

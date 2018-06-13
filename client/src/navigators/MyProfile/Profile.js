@@ -10,6 +10,7 @@ import {
   } from 'react-native';
 import styles from './styles';
 import { getCurrentUser } from '../../actions';
+import MyPostList from '../../components/List/MyPostList';
 
 
 class ProfileScreen extends Component {
@@ -47,7 +48,7 @@ class ProfileScreen extends Component {
             />
           </View>
           <View style = {innerStyles.rightContainer}> 
-            <Text style = {{fontSize: 16}}> 갯수를 넣어야 함 여기다 </Text> 
+            {/* <Text style = {{fontSize: 16}}> 갯수를 넣어야 함 여기다 </Text>  */}
             <Text style = {{fontSize: 16}}> 게시물 </Text>
             <View style = {innerStyles.buttonStyle}>
               <Button
@@ -59,7 +60,7 @@ class ProfileScreen extends Component {
             </View>
           </View>
         </View>
-        <Text> hello? </Text>
+        <MyPostList userId = {this.props.userId}/>
       </View>
     );
   }
@@ -91,6 +92,7 @@ const innerStyles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     username: state.MyProfileReducer.username,
+    userId: state.MyProfileReducer.userId,
   };
 }
 

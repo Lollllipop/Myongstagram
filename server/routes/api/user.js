@@ -13,6 +13,7 @@ router.get('/', asyncError(async (req, res, next) => {
   res.json(user.dataValues);
 }));
 
+
 router.get('/:id', function(req, res, next) { // 자신 말고 다른 사람들의 프로필 가져올 때
   console.log('req!! : ',req.headers.authorization);
   // sequelize find 필요! 토큰을 이용해서
