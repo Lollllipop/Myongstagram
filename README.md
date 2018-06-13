@@ -2,13 +2,13 @@
 
 # 사용법
 1. 깃 클론
-> $ git clone https://github.com/Lollllipop/Myongstagram-app.git
+`$ git clone https://github.com/Lollllipop/Myongstagram-app.git`
 
 2. 패키지 설치
-> $ cd client
-> $ yarn
-> $ cd server
-> $ yarn
+`$ cd client
+$ yarn
+$ cd server
+$ yarn`
 
 3. db 설정
 > $ psql postgres
