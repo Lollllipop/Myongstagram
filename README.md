@@ -1,27 +1,27 @@
 # Myongstagram-app
 
 # 사용법
-1. 깃 클론  
+1. 깃 클론   
 `$ git clone https://github.com/Lollllipop/Myongstagram-app.git`
 
-2. 패키지 설치  
-`$ cd client  
-$ yarn  
-$ cd server  
-$ yarn`  
+2. 패키지 설치   
+`$ cd client
+$ yarn
+$ cd server
+$ yarn`
 
 3. db 설정
-> $ psql postgres
-> > CREATE ROLE dahan WITH LOGIN CREATEDB PASSWORD '950113';
+`$ psql postgres`
+`> CREATE ROLE dahan WITH LOGIN CREATEDB PASSWORD '950113';`
   
 4. db init
-> $ sequelize db:create
-> $ sequelize db:migrate
-> $ sequelize db:seed:all
-> $ cd..
+`$ sequelize db:create`
+`$ sequelize db:migrate`
+`$ sequelize db:seed:all`
+`$ cd..`
   
 5. ip 설정
-> $ code .
+`$ code .`
 client/src/config/index.js로 이동
 server: 'http://172.30.1.23:3000'
 를 현재 컴퓨터의 local ip로 변경
