@@ -11,25 +11,25 @@ export default AppTab = createBottomTabNavigator (
     Main: {
       screen: MainStack,
       navigationOptions: {
-        tabBarIcon: <Foundation name="home" size={32} color="black" />
+        tabBarIcon: ({tintColor}) => <Foundation name="home" size={32} color={tintColor} />
       }
     },
     Search: {
       screen: SearchStack,
       navigationOptions: {
-        tabBarIcon: <FontAwesome name="search" size={27} color="black" />
+        tabBarIcon: ({tintColor}) => <FontAwesome name="search" size={27} color={tintColor} />
       }
     },
     Post: {
       screen: PostStack,
       navigationOptions: {
-        tabBarIcon: <FontAwesome name="plus-square" size={30} color="black" />
+        tabBarIcon: ({tintColor}) => <FontAwesome name="plus-square" size={30} color={tintColor} />
       }
     },
     MyProfile: {
       screen: MyProfileStack,
       navigationOptions: {
-        tabBarIcon: <MaterialIcons name="person" size={32} color="black" />
+        tabBarIcon: ({tintColor}) => <MaterialIcons name="person" size={32} color={tintColor} />
       }
     }
   },
@@ -43,7 +43,8 @@ export default AppTab = createBottomTabNavigator (
       }
     },
     tabBarOptions: {
-      showLabel: false
+      showLabel: false,
+      activeTintColor:'black',
     }
   }
 )

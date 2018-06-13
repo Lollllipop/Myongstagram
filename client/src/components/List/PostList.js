@@ -53,17 +53,7 @@ class PostList extends Component {
     }
   }
 
-  _renderItem = ({item}) => { 
-    return (
-      <PostListItem post = {item}/>
-    );
-  };
-
-  _renderFooter = ({item}) => { 
-    return (
-      <ActivityIndicator size = 'large'/>
-    );
-  };
+  _renderItem = ({item}) => <PostListItem post = {item}/>
 
   _onRefresh = async () => { 
     const recentPostId = this.props.posts[0].id;
@@ -93,6 +83,8 @@ class PostList extends Component {
       }
     }
   };
+
+  _renderFooter = ({item}) => <ActivityIndicator size = 'large'/>
 }
 
 

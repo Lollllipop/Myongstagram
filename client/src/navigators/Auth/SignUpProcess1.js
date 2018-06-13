@@ -64,7 +64,7 @@ class SignUpProcess1Screen extends Component {
             disabled = {!this.state.isEmail}
             onPress = {() => {
               this.props.navigation.navigate('SignUpProcess2', {
-                email: this.state.email // 이메일 넘김 다음 스크린으로
+                email: this.state.email
               })
             }}
           />

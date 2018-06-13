@@ -20,7 +20,7 @@ export default class AuthLoadingScreen extends React.Component {
     const accessToken = await AsyncStorage.getItem('accessToken'); 
     
     if (accessToken) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; // axios를 사용해 콜을 할 때 항상 토큰을 header에 달아준다.
+      axios.defaults.headers.common['Authorization'] = `Bearer ${1}`; // axios를 사용해 콜을 할 때 항상 토큰을 header에 달아준다.
       try {
         await axios.get(`${Config.server}/api`);
         this.props.navigation.navigate('App');

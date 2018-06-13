@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   postContentContainer: {
     flex: 1,
     backgroundColor: '#F3E9E6',
-    height: 100,
+    height: 120,
     padding: 10,
   }
 });

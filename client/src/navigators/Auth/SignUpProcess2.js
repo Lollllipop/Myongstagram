@@ -26,12 +26,7 @@ class SignUpProcess2Screen extends Component {
       password: '',
       isUsername: false,
       isPassword: false,
-      modalVisible: false
     };
-  }
-
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
   }
 
   render() {
@@ -96,11 +91,7 @@ class SignUpProcess2Screen extends Component {
             disabled = {!this.state.isUsername || !this.state.isPassword}
             onPress = {async () => {
               try {
-                const isTakenUsername = await axios.get(`${Config.server}/user`,{
-                  params: {
-                    username: this.state.username
-                  }
-                });
+                await axios.get(`${Config.server}/user?username=${this.state.username}`);
 
                 this.props.navigation.navigate('SignUpProcess3', {
                   email: email,
