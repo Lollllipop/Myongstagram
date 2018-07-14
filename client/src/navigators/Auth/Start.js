@@ -6,6 +6,8 @@ import {
   View, 
   } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+import { facebookSignIn } from '../../actions';
 import styles from './styles';
 
 class StartScreen extends Component {
@@ -20,13 +22,13 @@ class StartScreen extends Component {
       <View style = {styles.container}>
         <Text style = {{fontSize: 35}} > Myongstagram </Text>
         <Text> 친구들의 사진과 동영상을 보려면 가입하세요!! </Text>
-        {/* <View style = {{marginTop: 50, width: 260}}>
+        <View style = {{marginTop: 50, width: 260}}>
           <Button
             title = 'Facebook 로그인'
-            onPress = {() => this.props.navigation.navigate('App')}
+            onPress = {() => this.props.facebookSignIn()}
           />
         </View>
-        <Text> 또는 </Text> */}
+        <Text> 또는 </Text>
         <View style = {{width: 260}}>
           <Button
             title = '이메일로 가입하기'
@@ -44,4 +46,4 @@ class StartScreen extends Component {
   }
 }
 
-export default StartScreen;
+export default connect(null, { facebookSignIn })(StartScreen);

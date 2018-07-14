@@ -9,8 +9,10 @@ import {
   View,
   Text,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { signOut } from '../../actions';
 
-export default class AuthLoadingScreen extends React.Component {
+class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this._bootstrapAsync();
@@ -20,21 +22,36 @@ export default class AuthLoadingScreen extends React.Component {
     const accessToken = await AsyncStorage.getItem('accessToken'); 
     
     if (accessToken) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${1}`; // axios를 사용해 콜을 할 때 항상 토큰을 header에 달아준다.
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; // axios를 사용해 콜을 할 때 항상 토큰을 header에 달아준다.
       try {
-        await axios.get(`${Config.server}/api`);
-        this.props.navigation.navigate('App');
-      } catch(err) {
-        await AsyncStorage.clear();
-        if (err.response.status == 401) {
-          this.props.navigation.navigate('Auth');
+        const response = await axios.get(`${Config.server}/api`);
+
+        if (response.data == 'Successfully authenticate') {
+          this.props.navigation.navigate('App');
+        } else if (response.data == 'Expired token') {
+          const refreshToken = await AsyncStorage.getItem('refreshToken');
+          const response = await axios.post(`${Config.server}/auth/token`, {
+            'refreshToken': refreshToken,
+          });
+
+          if (response.data.accessToken) {
+            const accessToken = response.data.accessToken;
+          
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            await AsyncStorage.setItem('accessToken', accessToken);
+            this.props.navigation.navigate('App');
+          } else {
+            this.props.signOut();
+          }
         } else {
-          this.props.navigation.navigate('Auth');
-          // alert('Network Error');
+          this.props.signOut();
         }
+
+      } catch(err) {
+        this.props.signOut();
       } 
     } else {
-      this.props.navigation.navigate('Auth');
+      this.props.signOut();
     }
   };
 
@@ -47,3 +64,5 @@ export default class AuthLoadingScreen extends React.Component {
     );
   }
 }
+
+export default connect(null, { signOut })(AuthLoadingScreen);

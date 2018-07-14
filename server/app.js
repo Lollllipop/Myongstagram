@@ -6,10 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var OAuthServer = require('express-oauth-server');
+var passport = require('passport');
+var passportConfig = require('./utils/passport-config');
+var authConfig = require('./utils/auth-config');
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
-var tokenRouter = require('./routes/token');
+var authRouter = require('./routes/auth');
 var apiRouter = require('./routes/api');
 
 var oauthModel = require('./utils/oauth');
@@ -34,11 +37,27 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 
+// passport setup
+app.use(passport.initialize());
+passportConfig(passport);
+
+// jwt setup
+app.set('jwtSecret', authConfig.jwtSecret)
+
 // route
 app.use('/', indexRouter);
 app.use('/user', userRouter); // 회원가입
-app.use('/token', tokenRouter(app)); // 로그인 (토큰 발행)
-app.use('/api', app.oauth.authenticate(), apiRouter); // 로그인 후 서버의 api 데이터에 접근시에는 인증 필요!
+app.use('/auth', authRouter); // 로그인 (토큰 발행)
+app.use('/api', (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
+    console.log('message!!!! : ' + info.message);
+    if (err || !user) {
+      res.send(info.message);
+    } else {
+      next();
+    }
+  })(req, res, next);
+}, apiRouter); // 인증후 api에 접근
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

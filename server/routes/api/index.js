@@ -9,8 +9,8 @@ const postRouter = require('./post')
 const postsRouter = require('./posts')
 
 
-router.get('/', (req, res, next) => {
-  res.send(true);
+router.get('/', (req, res, next) => { // 초기 토큰 유효성 검사 
+  res.send('Successfully authenticate');
 })
 
 router.use('/user', userRouter);

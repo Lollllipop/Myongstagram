@@ -5,7 +5,9 @@ module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
-    email: DataTypes.STRING
+    email: DataTypes.STRING,
+    refreshToken: DataTypes.STRING,
+    refreshTokenExpiration: DataTypes.STRING,
   }, {});
 
   User.associate = (models) => {
@@ -19,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   User.prototype.toJSON = function() {
     var values = Object.assign({}, this.get());
     
-    delete values.password;
+    delete values.password; // password 외부 유출 막음
     return values;
   };
   
