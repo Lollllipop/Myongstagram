@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const asyncError = require('../../utils/async-error');
 const db = require('../../models');
 
 router.get('/', asyncError(async (req, res, next) => {
-  const userToken = req.headers.authorization.split(' ')[1];
-  const targetedTokenRow = await db.OAuthToken.findOne({where: {accessToken: userToken}});
-  const userId = targetedTokenRow.dataValues.userId
-  const user = await db.User.findById(userId);
-
-  delete user.dataValues.password;
-  res.json(user.dataValues);
+  const accessToken = req.headers.authorization.split(' ')[1];
+  const decoded = jwt.decode(accessToken);
+  const user = await db.User.findById(decoded.id);
+  const toBeOutUser = user.toJSON();
+  res.json(toBeOutUser);
 }));
 
 

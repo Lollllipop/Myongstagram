@@ -1,11 +1,9 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var OAuthServer = require('express-oauth-server');
 var passport = require('passport');
 var passportConfig = require('./utils/passport-config');
 var authConfig = require('./utils/auth-config');
@@ -15,21 +13,12 @@ var userRouter = require('./routes/user');
 var authRouter = require('./routes/auth');
 var apiRouter = require('./routes/api');
 
-var oauthModel = require('./utils/oauth');
-
 var app = express();
-
-
-app.oauth = new OAuthServer({
-  model: oauthModel
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,19 +34,20 @@ passportConfig(passport);
 app.set('jwtSecret', authConfig.jwtSecret)
 
 // route
+app.use(express.static(path.join(__dirname, 'public'))); // 정적파일 라우팅
 app.use('/', indexRouter);
 app.use('/user', userRouter); // 회원가입
 app.use('/auth', authRouter); // 로그인 (토큰 발행)
-app.use('/api', (req, res, next) => {
+app.use('/api', (req, res, next) => { // 인증후 api에 접근
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    console.log('message!!!! : ' + info.message);
+    // console.log('message!!!! : ' + info.message);
     if (err || !user) {
       res.send(info.message);
     } else {
       next();
     }
   })(req, res, next);
-}, apiRouter); // 인증후 api에 접근
+}, apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
